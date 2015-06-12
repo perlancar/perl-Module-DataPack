@@ -23,7 +23,7 @@ $SPEC{datapack_modules} = {
 
 Both this module and `Module:FatPack` generate source code that embeds modules'
 source codes and load them on-demand via require hook. The difference is that
-the modules' source codes are put in __DATA__ section instead of regular Perl
+the modules' source codes are put in `__DATA__` section instead of regular Perl
 hashes (fatpack uses `%fatpacked`). This reduces compilation overhead, although
 this is not noticeable unless when the number of embedded modules is quite
 large. For example, in `App::pause`, the `pause` script embeds ~320 modules with
@@ -34,8 +34,8 @@ There are two downsides of this technique. The major one is that you cannot load
 modules during BEGIN phase (e.g. using `use`) because at that point, DATA
 section is not yet available. You can only use run-time require()'s.
 
-Another downside of this technique is that you cannot use __DATA__ section for
-other purpose (well, actually with some care, you still can).
+Another downside of this technique is that you cannot use `__DATA__` section for
+other purposes (well, actually with some care, you still can).
 
 _
     args_rels => {
@@ -205,10 +205,25 @@ sub datapack_modules {
 
     push @res, $args{preamble} if defined $args{preamble};
     push @res, <<'_';
-BEGIN {
+# BEGIN DATAPACK CODE
+{
     my $toc;
+    my $data_linepos = 1;
     unshift @INC, sub {
         $toc ||= do {
+
+            # calculate the line number of data section
+            my $data_pos = tell(DATA);
+            seek DATA, 0, 0;
+            my $pos = 0;
+            while (1) {
+                my $line = <DATA>;
+                $pos += length($line);
+                $data_linepos++;
+                last if $pos >= $data_pos;
+            }
+            seek DATA, $data_pos, 0;
+
             my $fh = \*DATA;
 # INSERT_BLOCK: Data::Section::Seekable::Reader read_dss_toc
             \%toc;
@@ -216,26 +231,35 @@ BEGIN {
         if ($toc->{$_[1]}) {
             seek DATA, $toc->{$_[1]}[0], 0;
             read DATA, my($content), $toc->{$_[1]}[1];
+            my ($order, $lineoffset) = split(';', $toc->{$_[1]}[2]);
+            $content = "# line ".($data_linepos + 1 + keys(%$toc) + 1 + $order + $lineoffset)." \"".__FILE__."\"\n" . $content;
             open my $fh, '<', \$content
                 or die "DataPacker error loading $_[1] (could be a perl installation issue?)";
             return $fh;
         }
         return;
     };
-} # END OF DATAPACK CODE
+}
+# END DATAPACK CODE
 _
 
     push @res, $args{postamble} if defined $args{postamble};
 
     require Data::Section::Seekable::Writer;
     my $writer = Data::Section::Seekable::Writer->new(separator => "---\n");
-    for my $mod_pm (keys %module_srcs) {
+    my $linepos = 0;
+    $writer->add_part("00separator" => "", "0;0");
+    my $i = 0;
+    for my $mod_pm (sort keys %module_srcs) {
+        $i++;
         my $content = join(
             "",
-            "# line 1 \"__FILE__\"\n",
             $module_srcs{$mod_pm},
         );
-        $writer->add_part($mod_pm => $content);
+        $writer->separator("=== START OF $mod_pm ===\n");
+        $writer->add_part($mod_pm => $content, "$i;$linepos");
+        my $lines = 0; $lines++ while $content =~ /^/gm;
+        $linepos += $lines;
     }
     push @res, "\n__DATA__\n", $writer;
 
