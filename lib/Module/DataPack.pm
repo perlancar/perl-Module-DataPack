@@ -41,11 +41,6 @@ _
     args_rels => {
         req_one => ['module_names', 'module_srcs'],
         'dep_any&' => [
-            [stripper_maintain_linum => ['stripper']],
-            [stripper_ws             => ['stripper']],
-            [stripper_comment        => ['stripper']],
-            [stripper_pod            => ['stripper']],
-            [stripper_log            => ['stripper']],
         ],
     },
     args => {
@@ -92,73 +87,6 @@ _
             schema => [bool => default => 0],
             tags => ['category:output'],
         },
-
-        stripper => {
-            summary => 'Whether to strip included modules using Perl::Stripper',
-            'summary.alt.bool.yes' => 'Strip included modules using Perl::Stripper',
-            schema => ['bool' => default=>0],
-            tags => ['category:stripping'],
-        },
-        stripper_maintain_linum => {
-            summary => "Set maintain_linum=1 in Perl::Stripper",
-            schema => ['bool'],
-            default => 0,
-            tags => ['category:stripping'],
-            description => <<'_',
-
-Only relevant when stripping using Perl::Stripper.
-
-_
-        },
-        stripper_ws => {
-            summary => "Set strip_ws=1 (strip whitespace) in Perl::Stripper",
-            'summary.alt.bool.not' => "Set strip_ws=0 (don't strip whitespace) in Perl::Stripper",
-            schema => ['bool'],
-            default => 1,
-            tags => ['category:stripping'],
-            description => <<'_',
-
-Only relevant when stripping using Perl::Stripper.
-
-_
-        },
-        stripper_comment => {
-            summary => "Set strip_comment=1 (strip comments) in Perl::Stripper",
-            'summary.alt.bool.not' => "Set strip_comment=0 (don't strip comments) in Perl::Stripper",
-            schema => ['bool'],
-            default => 1,
-            description => <<'_',
-
-Only relevant when stripping using Perl::Stripper.
-
-_
-            tags => ['category:stripping'],
-        },
-        stripper_pod => {
-            summary => "Set strip_pod=1 (strip POD) in Perl::Stripper",
-            'summary.alt.bool.not' => "Set strip_pod=0 (don't strip POD) in Perl::Stripper",
-            schema => ['bool'],
-            default => 1,
-            tags => ['category:stripping'],
-            description => <<'_',
-
-Only relevant when stripping using Perl::Stripper.
-
-_
-        },
-        stripper_log => {
-            summary => "Set strip_log=1 (strip log statements) in Perl::Stripper",
-            'summary.alt.bool.not' => "Set strip_log=0 (don't strip log statements) in Perl::Stripper",
-            schema => ['bool'],
-            default => 0,
-            tags => ['category:stripping'],
-            description => <<'_',
-
-Only relevant when stripping using Perl::Stripper.
-
-_
-        },
-        # XXX strip_log_levels
 
     },
 };
@@ -276,6 +204,8 @@ _
         return [200, "OK", join("", @res)];
     }
 }
+
+require PERLANCAR::AppUtil::PerlStripper; PERLANCAR::AppUtil::PerlStripper::_add_stripper_args_to_meta($SPEC{datapack_modules});
 
 1;
 # ABSTRACT:
