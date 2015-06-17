@@ -1,5 +1,12 @@
 Revision history for Module-DataPack
 
+0.02     2015-06-17 (PERLANCAR)
+
+         - No functional changes.
+
+         - [doc] Mention Data::Section::Seekable & datapack-modules script.
+
+
 0.01     2015-06-12 (PERLANCAR)
 
          - First release.
