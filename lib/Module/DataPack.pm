@@ -285,3 +285,5 @@ _
 L<App::FatPack>, L<App::fatten>
 
 L<Data::Section::Seekable>, the format used for the data section
+
+L<datapack-modules>, CLI for C<datapack_modules>.
