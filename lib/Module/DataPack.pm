@@ -174,17 +174,15 @@ _
     push @res, $args{postamble} if defined $args{postamble};
 
     require Data::Section::Seekable::Writer;
-    my $writer = Data::Section::Seekable::Writer->new(separator => "---\n");
+    my $writer = Data::Section::Seekable::Writer->new;
     my $linepos = 0;
-    $writer->add_part("00separator" => "", "0;0");
-    my $i = 0;
+    my $i = -1;
     for my $mod_pm (sort keys %module_srcs) {
         $i++;
         my $content = join(
             "",
             $module_srcs{$mod_pm},
         );
-        $writer->separator("=== START OF $mod_pm ===\n");
         $writer->add_part($mod_pm => $content, "$i;$linepos");
         my $lines = 0; $lines++ while $content =~ /^/gm;
         $linepos += $lines;
