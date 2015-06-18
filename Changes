@@ -1,5 +1,10 @@
 Revision history for Module-DataPack
 
+0.04    2015-06-18 (PERLANCAR)
+
+	- Adjust to Data::Section::Seekable::Writer 0.06.
+
+
 0.03    2015-06-17 (PERLANCAR)
 
 	- No functional changes.
