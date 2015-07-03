@@ -1,5 +1,11 @@
 Revision history for Module-DataPack
 
+0.05    2015-07-03 (PERLANCAR)
+
+	- Accept Foo/Bar.pm or Foo::Bar syntax in module_names &
+	  module_srcs.
+
+
 0.04    2015-06-18 (PERLANCAR)
 
 	- Adjust to Data::Section::Seekable::Writer 0.06.
