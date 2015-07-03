@@ -96,13 +96,13 @@ sub datapack_modules {
     my %module_srcs; # key: mod_pm
     if ($args{module_srcs}) {
         for my $mod (keys %{ $args{module_srcs} }) {
-            my $mod_pm = $mod; $mod_pm =~ s!::!/!g; $mod_pm .= ".pm";
+            my $mod_pm = $mod; $mod_pm =~ s!::!/!g; $mod_pm .= ".pm" unless $mod_pm =~ /\.pm\z/;
             $module_srcs{$mod_pm} = $args{module_srcs}{$mod};
         }
     } else {
         require Module::Path::More;
         for my $mod (@{ $args{module_names} }) {
-            my $mod_pm = $mod; $mod_pm =~ s!::!/!g; $mod_pm .= ".pm";
+            my $mod_pm = $mod; $mod_pm =~ s!::!/!g; $mod_pm .= ".pm" unless $mod_pm =~ /\.pm\z/;
             next if $module_srcs{$mod_pm};
             my $path = Module::Path::More::module_path(
                 module => $mod, find_pmc=>0);
