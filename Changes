@@ -1,5 +1,12 @@
 Revision history for Module-DataPack
 
+0.06    2015-07-04 (PERLANCAR)
+
+	- Indent datapacked modules, like what App::FatPacker does, so
+	  packed script is easier to work with file mungers Dist::Zilla
+	  plugins like DZP:OurPkgVersion et al.
+
+
 0.05    2015-07-03 (PERLANCAR)
 
 	- Accept Foo/Bar.pm or Foo::Bar syntax in module_names &
