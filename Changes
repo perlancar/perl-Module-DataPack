@@ -7,8 +7,8 @@ Revision history for Module-DataPack
 
 0.06    2015-07-04 (PERLANCAR)
 
-	- Indent datapacked modules, like what App::FatPacker does, so
-	  packed script is easier to work with file mungers Dist::Zilla
+	- Indent datapacked modules, like what App::FatPacker does, so packed
+	  script is easier to work with regex-based file mungers Dist::Zilla
 	  plugins like DZP:OurPkgVersion et al.
 
 
