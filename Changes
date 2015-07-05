@@ -1,5 +1,10 @@
 Revision history for Module-DataPack
 
+0.07    2015-07-05 (PERLANCAR)
+
+	- [Bugfix] Use binary encoding to avoid mangling.
+
+
 0.06    2015-07-04 (PERLANCAR)
 
 	- Indent datapacked modules, like what App::FatPacker does, so
