@@ -7,6 +7,8 @@ use 5.010001;
 use strict;
 use warnings;
 
+use File::Slurper qw(read_binary write_binary);
+
 require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(datapack_modules);
@@ -107,11 +109,7 @@ sub datapack_modules {
             my $path = Module::Path::More::module_path(
                 module => $mod, find_pmc=>0);
             die "Can't find module '$mod_pm'" unless $path;
-            $module_srcs{$mod_pm} = do {
-                local $/;
-                open my($fh), "<", $path or die "Can't open $path: $!";
-                ~~<$fh>;
-            };
+            $module_srcs{$mod_pm} = read_binary($path);
         }
     }
 
@@ -197,8 +195,8 @@ _
             return [409, "Won't overwrite existing file '$outfile'"]
                 unless $args{overwrite};
         }
-        open my($fh), ">", $outfile or die "Can't write to '$outfile': $!";
-        print $fh join("", @res);
+        write_binary($outfile, join("", @res))
+            or die "Can't write to '$outfile': $!";
         return [200, "OK, written to '$outfile'"];
     } else {
         return [200, "OK", join("", @res)];
