@@ -130,6 +130,8 @@ sub datapack_modules {
     my @res;
 
     push @res, $args{preamble} if defined $args{preamble};
+
+    # how to line number (# line): position of __DATA__ + 1 (DSS header) + number of header lines + 1 (blank line) + $order+1 (number of ### file ### header) + lineoffset
     push @res, <<'_';
 # BEGIN DATAPACK CODE
 {
@@ -159,7 +161,7 @@ sub datapack_modules {
             read DATA, my($content), $toc->{$_[1]}[1];
             my ($order, $lineoffset) = split(';', $toc->{$_[1]}[2]);
             $content =~ s/^ //gm;
-            $content = "# line ".($data_linepos + 1 + keys(%$toc) + 1 + $order + $lineoffset)." \"".__FILE__."\"\n" . $content;
+            $content = "# line ".($data_linepos + 1 + keys(%$toc) + 1 + $order+1 + $lineoffset)." \"".__FILE__."\"\n" . $content;
             open my $fh, '<', \$content
                 or die "DataPacker error loading $_[1] (could be a perl installation issue?)";
             return $fh;
