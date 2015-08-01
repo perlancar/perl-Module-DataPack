@@ -163,7 +163,7 @@ sub datapack_modules {
             $content =~ s/^ //gm;
             $content = "# line ".($data_linepos + 1 + keys(%$toc) + 1 + $order+1 + $lineoffset)." \"".__FILE__."\"\n" . $content;
             open my $fh, '<', \$content
-                or die "DataPacker error loading $_[1] (could be a perl installation issue?)";
+                or die "DataPacker error loading $_[1]: $!";
             return $fh;
         }
         return;
