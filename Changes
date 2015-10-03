@@ -1,5 +1,13 @@
 Revision history for Module-DataPack
 
+0.11    2015-10-03 (PERLANCAR)
+
+	- No functional changes.
+
+	- Update mentioned module App::fatten (has been renamed to
+	  App::depak).
+
+
 0.10    2015-09-03 (PERLANCAR)
 
 	- No functional changes.
