@@ -212,7 +212,7 @@ require PERLANCAR::AppUtil::PerlStripper; PERLANCAR::AppUtil::PerlStripper::_add
 
 =head1 SEE ALSO
 
-L<App::FatPack>, L<App::fatten>
+L<App::FatPack>, L<App::depak>
 
 L<Data::Section::Seekable>, the format used for the data section
 
