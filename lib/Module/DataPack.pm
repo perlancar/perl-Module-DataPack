@@ -29,8 +29,8 @@ the modules' source codes are put in `__DATA__` section instead of regular Perl
 hashes (fatpack uses `%fatpacked`). This reduces compilation overhead, although
 this is not noticeable unless when the number of embedded modules is quite
 large. For example, in `App::pause`, the `pause` script embeds ~320 modules with
-a total of ~54000 lines. The overhead of fatpack code is about 49ms, while with
-datapack the overhead is about XXX ms.
+a total of ~54000 lines. The overhead of fatpack code is ~49ms on my PC, while
+with datapack the overhead is about ~10ms.
 
 There are two downsides of this technique. The major one is that you cannot load
 modules during BEGIN phase (e.g. using `use`) because at that point, DATA
