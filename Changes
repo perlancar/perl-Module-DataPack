@@ -1,5 +1,10 @@
 Revision history for Module-DataPack
 
+0.15    2015-10-21 (PERLANCAR)
+
+	- [Bugfix] fix line numbering 2nd attempt, still off by 1, derp.
+
+
 0.14    2015-10-21 (PERLANCAR)
 
 	- [Bugfix] Fix line number reporting: didn't handle lines before
