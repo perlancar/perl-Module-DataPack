@@ -1,5 +1,13 @@
 Revision history for Module-DataPack
 
+0.13    2015-10-21 (PERLANCAR)
+
+	- No functional changes.
+
+	- [build] Rebuild with Data::Section::Seekable::Reader 0.07 which allows
+          header line to not be the first line of data section.
+
+
 0.12    2015-10-11 (PERLANCAR)
 
 	- No functional changes.
