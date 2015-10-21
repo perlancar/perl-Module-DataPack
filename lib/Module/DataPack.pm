@@ -140,6 +140,9 @@ sub datapack_modules {
     unshift @INC, sub {
         $toc ||= do {
 
+            my $fh = \*DATA;
+# INSERT_BLOCK: Data::Section::Seekable::Reader read_dss_toc
+
             # calculate the line number of data section
             my $data_pos = tell(DATA);
             seek DATA, 0, 0;
@@ -152,8 +155,6 @@ sub datapack_modules {
             }
             seek DATA, $data_pos, 0;
 
-            my $fh = \*DATA;
-# INSERT_BLOCK: Data::Section::Seekable::Reader read_dss_toc
             \%toc;
         };
         if ($toc->{$_[1]}) {
@@ -161,7 +162,7 @@ sub datapack_modules {
             read DATA, my($content), $toc->{$_[1]}[1];
             my ($order, $lineoffset) = split(';', $toc->{$_[1]}[2]);
             $content =~ s/^ //gm;
-            $content = "# line ".($data_linepos + 1 + keys(%$toc) + 1 + $order+1 + $lineoffset)." \"".__FILE__."\"\n" . $content;
+            $content = "# line ".($data_linepos + 1 + $order+1 + $lineoffset)." \"".__FILE__."\"\n" . $content;
             open my $fh, '<', \$content
                 or die "DataPacker error loading $_[1]: $!";
             return $fh;
