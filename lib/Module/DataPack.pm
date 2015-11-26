@@ -161,7 +161,7 @@ sub datapack_modules {
             seek DATA, $toc->{$_[1]}[0], 0;
             read DATA, my($content), $toc->{$_[1]}[1];
             my ($order, $lineoffset) = split(';', $toc->{$_[1]}[2]);
-            $content =~ s/^ //gm;
+            $content =~ s/^#//gm;
             $content = "# line ".($data_linepos + $order+1 + $lineoffset)." \"".__FILE__."\"\n" . $content;
             open my $fh, '<', \$content
                 or die "DataPacker error loading $_[1]: $!";
@@ -185,7 +185,7 @@ _
             "",
             $module_srcs{$mod_pm},
         );
-        $content =~ s/^/ /gm;
+        $content =~ s/^/#/gm;
         $writer->add_part($mod_pm => $content, "$i;$linepos");
         my $lines = 0; $lines++ while $content =~ /^/gm;
         $linepos += $lines;
