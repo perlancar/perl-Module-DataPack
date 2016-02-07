@@ -91,6 +91,16 @@ _
         },
 
     },
+    examples => [
+        {
+            summary => 'Datapack two modules',
+            src => 'datapack-modules Text::Table::Tiny Try::Tiny',
+            src_plang => 'bash',
+            test => 0,
+            'x.doc.show_result' => 0,
+        },
+
+    ],
 };
 sub datapack_modules {
     my %args = @_;
@@ -213,7 +223,10 @@ require PERLANCAR::AppUtil::PerlStripper; PERLANCAR::AppUtil::PerlStripper::_add
 
 =head1 SEE ALSO
 
-L<App::FatPack>, L<App::depak>
+L<Module::FatPack> for a similar module which uses fatpacking technique instead
+of datapacking.
+
+L<App::depak> for more options e.g. use various tracing methods, etc.
 
 L<Data::Section::Seekable>, the format used for the data section
 
