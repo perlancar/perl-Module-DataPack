@@ -1,5 +1,15 @@
 Revision history for Module-DataPack
 
+0.17    2016-02-09 (PERLANCAR)
+
+	- No functional changes.
+
+	- Add example.
+
+	- [dist] Bump Data::Section::Seekable version to 0.08 (allow empty
+	  parts).
+
+
 0.16    2015-11-27 (PERLANCAR)
 
 	- [Experimental] Use '#' to prefix lines in included source code
