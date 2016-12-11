@@ -47,6 +47,8 @@ _
     },
     args => {
         module_names => {
+            'x.name.is_plural' => 1,
+            'x.name.singular' => 'module_name',
             summary => 'Module names to search',
             schema  => ['array*', of=>['str*', match=>$mod_re], min_len=>1],
             tags => ['category:input'],
@@ -56,6 +58,8 @@ _
             cmdline_aliases => {m=>{}},
         },
         module_srcs => {
+            'x.name.is_plural' => 1,
+            'x.name.singular' => 'module_src',
             summary => 'Module source codes (a hash, keys are module names)',
             schema  => ['hash*', {
                 each_key=>['str*', match=>$mod_re],
