@@ -1,5 +1,12 @@
 Revision history for Module-DataPack
 
+0.18    2016-12-11 (PERLANCAR)
+
+	- Tweak Rinci metadata for nicer CLI.
+
+	- Fix module regex (subpackages are allowed to begin with a digit).
+
+
 0.17    2016-02-09 (PERLANCAR)
 
 	- No functional changes.
