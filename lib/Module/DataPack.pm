@@ -94,6 +94,11 @@ _
             tags => ['category:output'],
         },
 
+        put_hook_at_the_end => {
+            summary => 'Put the require hook at the end of @INC using "push" '.
+                'instead of at the front using "unshift"',
+            schema => ['bool*', is=>1],
+        },
     },
     examples => [
         {
@@ -108,6 +113,8 @@ _
 };
 sub datapack_modules {
     my %args = @_;
+
+    my $put_hook_at_the_end = $args{put_hook_at_the_end} // 0;
 
     my %module_srcs; # key: mod_pm
     if ($args{module_srcs}) {
@@ -151,7 +158,17 @@ sub datapack_modules {
 {
     my $toc;
     my $data_linepos = 1;
+_
+    if ($put_hook_at_the_end) {
+        push @res, <<'_';
+    push @INC, sub {
+_
+    } else {
+        push @res, <<'_';
     unshift @INC, sub {
+_
+    }
+    push @res, <<'_';
         $toc ||= do {
 
             my $fh = \*DATA;
