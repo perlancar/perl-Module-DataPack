@@ -1,8 +1,5 @@
 package Module::DataPack;
 
-# DATE
-# VERSION
-
 use 5.010001;
 use strict;
 use warnings;
@@ -12,6 +9,11 @@ use File::Slurper qw(read_binary write_binary);
 require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(datapack_modules);
+
+# AUTHORITY
+# DATE
+# DIST
+# VERSION
 
 our %SPEC;
 
@@ -155,20 +157,17 @@ sub datapack_modules {
     # how to line number (# line): position of __DATA__ + 1 (DSS header) + number of header lines + 1 (blank line) + $order+1 (number of ### file ### header) + lineoffset
     push @res, <<'_';
 # BEGIN DATAPACK CODE
+package main::_DataPacker;
+our $handler;
+sub main::_DataPacker::INC { goto $handler }
+
+package main;
 {
     my $toc;
     my $data_linepos = 1;
 _
-    if ($put_hook_at_the_end) {
-        push @res, <<'_';
-    push @INC, sub {
-_
-    } else {
-        push @res, <<'_';
-    unshift @INC, sub {
-_
-    }
     push @res, <<'_';
+    $main::_DataPacker::handler = sub {
         $toc ||= do {
 
             my $fh = \*DATA;
@@ -199,7 +198,18 @@ _
             return $fh;
         }
         return;
-    };
+    }; # handler
+_
+    if ($put_hook_at_the_end) {
+        push @res, <<'_';
+    push @INC, bless(sub {"dummy"}, "main::_DataPacker");
+_
+    } else {
+        push @res, <<'_';
+    unshift @INC, bless(sub {"dummy"}, "main::_DataPacker");
+_
+    }
+    push @res, <<'_';
 }
 # END DATAPACK CODE
 _
