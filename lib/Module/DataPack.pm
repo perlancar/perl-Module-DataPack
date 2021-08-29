@@ -168,6 +168,9 @@ package main;
 _
     push @res, <<'_';
     $main::_DataPacker::handler = sub {
+        my $debug = $ENV{PERL_DATAPACKER_DEBUG};
+        warn "[datapacker] Hook called with arguments: (".join(",", @_).")\n" if $debug;
+
         $toc ||= do {
 
             my $fh = \*DATA;
@@ -188,6 +191,7 @@ _
             \%toc;
         };
         if ($toc->{$_[1]}) {
+            warn "[datapacker] $_[1] FOUND in packed modules\n" if $debug;
             seek DATA, $toc->{$_[1]}[0], 0;
             read DATA, my($content), $toc->{$_[1]}[1];
             my ($order, $lineoffset) = split(';', $toc->{$_[1]}[2]);
@@ -196,6 +200,8 @@ _
             open my $fh, '<', \$content
                 or die "DataPacker error loading $_[1]: $!";
             return $fh;
+        } else {
+            warn "[datapacker] $_[1] NOT found in packed modules\n" if $debug;
         }
         return;
     }; # handler
@@ -251,6 +257,13 @@ require PERLANCAR::AppUtil::PerlStripper; PERLANCAR::AppUtil::PerlStripper::_add
 
 1;
 # ABSTRACT:
+
+=head1 ENVIRONMENT
+
+=head2 PERL_DATAPACKER_DEBUG
+
+Boolean. When set to true, the datapacker @INC hook will print debug messages.
+
 
 =head1 SEE ALSO
 
